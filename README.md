@@ -1,6 +1,8 @@
 This repo is to prepare synthetic data for training classifiers and detectors used in https://github.com/ShiZiqiang/aicity-23/. Details on how to generate the data can be found in our paper "CheckSORT: Refined Synthetic Data Combination and Optimized SORT for Automatic Retail Checkout".
 
-1. Generate synthesized background images (borrowed and adapted from https://github.com/cybercore-co-ltd/Track4_aicity_2022)
+## Optimized synthetic data generation
+
+### 1. Generate synthesized background images (borrowed and adapted from https://github.com/cybercore-co-ltd/Track4_aicity_2022)
 
 Run the following command to generate the backgrounds
 ```
@@ -19,11 +21,11 @@ mkdir -p ./data/backgrounds/random_bg/
 python ./tools/batch_resize.py
 ```
 
-2. For objects of products (foreground products):
+### 2. For objects of products (foreground products):
 
-Put the original 116500 training images provided by the orginazer into ./data/AIC23_Track4_Automated_Checkout/train/.
+Put the original 116500 training images provided by the organizer into ./data/AIC23_Track4_Automated_Checkout/train/.
 
-Put segmentation labels of the original 116500  training images provided by the orginazer into
+Put segmentation labels of the original 116500  training images provided by the organizer into
 ./data/AIC23_Track4_Automated_Checkout/segmentation_labels.
 
 Do the MSRCR enhancement of training data 
@@ -40,14 +42,14 @@ python ./tools/batch_to_rgba.py
 mv ./data/AIC23_Track4_Automated_Checkout/train_RGBA/ ./data/objects/
 ```
 
-3. Synthesize image data for detectors (borrowed and adapted from https://github.com/a-nau/synthetic-dataset-generation/)
+### 3. Synthesize image data for detectors (borrowed and adapted from https://github.com/a-nau/synthetic-dataset-generation/)
 
 First to install the required packages.
 ```
 pip install -r requirements.txt
 ```
 
-Then do the opitimized synthesized training image generation (This program will generate images all the time without stopping, when it runs for 12 hours, it can be stopped manually).
+Then do the optimized synthesized training image generation (This program will generate images all the time without stopping, when it runs for 12 hours, it can be stopped manually).
 ```
 python src/tools/generate_synthetic_data_train.py (Run 12 hours, then ctrl+c.)
 ```
@@ -75,12 +77,23 @@ Move the training data for detectors
 mkdir coco_offline_MSRCR_GB_halfbackground_size100_no-ob_1
 mv ./data/aicity23_train_scale0.4-0.8_iou0.5/train/ ./coco_offline_MSRCR_GB_halfbackground_size100_no-ob_1/
 ```
-There is a instances_train.json in ./coco_offline_MSRCR_GB_halfbackground_size100_no-ob_1.
+There is an instances_train.json in ./coco_offline_MSRCR_GB_halfbackground_size100_no-ob_1.
 Change the last row of instances_train.json from "name": "box" to "name": "1".
 
 So far we have completed the training data preparation for the classifier and detector, which are in folders ./alladd2 and ./coco_offline_MSRCR_GB_halfbackground_size100_no-ob_1/ respectively.
 
 
-# Contact
+## Contact
 
 If you have any questions, feel free to contact Ziqiang Shi (shiziqiang@fujitsu.com).
+
+## Reference
+```
+@InProceedings{shi23AIC23,
+	author = {Ziqiang Shi and Zhongling Liu and Liu Liu and Rujie Liu and Takuma Yamamoto and Xiaoyu Mi and Daisuke Uchida},
+	title = {CheckSORT: Refined Synthetic Data Combination and Optimized SORT for Automatic Retail Checkout},
+	booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+	month = {June},
+	year = {2023},
+}
+```
